@@ -10,7 +10,7 @@ import { getTwoFactorTokenByEmail } from "@/data/twoFactorToken";
 import { sendVerificationEmail, sendTwoFactorTokenEmail,} from "@/lib/resend"
 import { generateTwoFactorToken, generateVerificationToken } from "@/lib/tokens";
 import { getTwoFactorConfirmationByUserId } from "@/data/twoFactorConfirmation";
-
+import { currentRole } from "@/lib/getSession";
 export const login = async (
   values: z.infer<typeof LoginSchema>,
   callbackUrl?: string | null,
@@ -96,7 +96,8 @@ export const login = async (
     await signIn("credentials", {
       email,
       password,
-      redirectTo: callbackUrl || "/",
+      redirect:false,
+      // redirectTo: callbackUrl || "/",
     })
   } catch (error) {
     if (error instanceof AuthError) {

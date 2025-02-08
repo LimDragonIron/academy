@@ -4,7 +4,7 @@
  * @type {string[]}
  */
 export const publicRoutes = [
-    "/",
+    '/auth/login', '/auth/register',
     "/auth/new-verification"
 ];
   
@@ -26,18 +26,18 @@ export const authRoutes = [
  * Routes that start with this prefix are used for API authentication purposes
  * @type {string}
  */
-export const apiAuthPrefix = "/api/auth";
+export const apiAuthPrefix = "/api/auth/";
 
 type RouteAccessMap = {
     [key: string]: string[];
 };
 
 export const routeAccessMap: RouteAccessMap = {
-    "/user" : ["user"],
+    "/pendinguser" : ["pendinguser"],
     "/admin(.*)": ["admin"],
-    "/student(.*)": ["student"],
-    "/teacher(.*)": ["teacher"],
-    "/parent(.*)": ["parent"],
+    "/student(.*)": ["student", "admin"],
+    "/teacher(.*)": ["teacher", "admin"],
+    "/parent(.*)": ["parent", "admin"],
     "/list/teachers": ["admin", "teacher"],
     "/list/students": ["admin", "teacher"],
     "/list/parents": ["admin", "teacher"],

@@ -6,6 +6,9 @@ import {
 } from "@/routes";
 import NextAuth from "next-auth";
 import authConfig from "./auth.config";
+import { NextResponse } from "next/server";
+import { getToken } from 'next-auth/jwt';
+const secret = process.env.AUTH_SECRET;
 
 function createRouteMatcher(routes: string[]): (path: string) => boolean {
   // Compile the routes into regular expressions
@@ -24,64 +27,63 @@ const matchers = Object.keys(routeAccessMap).map((route) => ({
 const { auth } = NextAuth(authConfig);
 
 //@ts-expect-error
-export default auth((req) => {
-  const { nextUrl} = req;
-  const isLoggedIn = !!req.auth;
-  const userRole = req.auth?.user?.role; 
-  
+export default auth(async function middleware(req: NextRequest, res:NextResponse){
+  const { nextUrl } = req;
+  const token = await getToken({ req, secret });
+  const isPublicRoute = publicRoutes.includes(nextUrl.pathname)
   const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthPrefix);
-  const isPublicRoute = publicRoutes.includes(nextUrl.pathname);
-  const isAuthRoute = authRoutes.includes(nextUrl.pathname);
-  
+
+  // If the request is for a api route, continue
   if (isApiAuthRoute) {
-    return null;
+    return NextResponse.next();
   }
 
-  if (isAuthRoute) {
-    if (isLoggedIn) {
-      const redirectUrl:string = `/${userRole}`
-      return Response.redirect(new URL(redirectUrl.toLowerCase(), nextUrl))
-    }
-    return null;
+  // If the request is for a public route, continue
+  if (isPublicRoute) {
+    return NextResponse.next();
   }
 
-  if (nextUrl.pathname === "/" && !isLoggedIn) {
-    return Response.redirect(new URL(`/auth/login`, nextUrl));
+  // If the user is not authenticated, redirect to login
+  if (!token) {
+    const url = req.nextUrl.clone();
+    url.pathname = '/auth/login';
+    url.search = `callbackUrl=${encodeURIComponent(req.nextUrl.pathname)}`;
+    return NextResponse.redirect(url);
   }
 
-  if (isLoggedIn) {
-    const role = userRole!.toLocaleLowerCase()
+  //@ts-expect-error
+  const userRole = token?.role.toLowerCase()
 
-    if (nextUrl.pathname === "/") {
-      return Response.redirect(new URL(`/${role}`, nextUrl));
-    }
-    
+  if (userRole) {
+    let accessAllowed = false;
     for (const { matcher, allowedRoles } of matchers) {
-      if (matcher(nextUrl.pathname) && !allowedRoles.includes(role)) {
-        return Response.redirect(new URL(`/${role}`, nextUrl));
-      } 
-    }
-  
-    return null
-  }
-
-  if (!isLoggedIn && !isPublicRoute) {
-    let callbackUrl = nextUrl.pathname;
-    if (nextUrl.search) {
-      callbackUrl += nextUrl.search;
-    }
-    const encodedCallbackUrl = encodeURIComponent(callbackUrl);
-    for (const { matcher } of matchers) {
-      if (matcher(callbackUrl) ) {
-        return Response.redirect(new URL(
-          `/auth/login?callbackUrl=${encodedCallbackUrl}`,
-          nextUrl
-        ));
+      if (matcher(nextUrl.pathname)) {
+        if (allowedRoles.includes(userRole)) {
+          accessAllowed = true;
+          break;
+        } else {
+          const redirectUrl = `/${userRole}`;
+          // Prevent infinite loop by checking if the current URL is already the redirect URL
+          if (nextUrl.pathname !== redirectUrl) {
+            return NextResponse.redirect(new URL(redirectUrl, nextUrl));
+          } else {
+            return NextResponse.next();
+          }
+        }
       }
     }
-    return Response.redirect(new URL("/auth/login", nextUrl));
+    if (accessAllowed) {
+      return NextResponse.next();
+    } else {
+      // If no access is allowed for the current path, redirect to the user's role-based URL
+      const redirectUrl = `/${userRole}`;
+      if (nextUrl.pathname !== redirectUrl) {
+        return NextResponse.redirect(new URL(redirectUrl, nextUrl));
+      }
+    }
   }
-  return null;
+
+  return NextResponse.next();
 })
 
 // Optionally, don't invoke Middleware on some paths

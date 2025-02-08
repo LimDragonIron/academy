@@ -32,7 +32,7 @@ async function main() {
                 email:"th@test.com",
                 name:"th",
                 password: basePW,
-                role: UserRole.THECHER,
+                role: UserRole.TEACHER,
                 isApproval: true,
                 emailVerified: new Date(),
             }
