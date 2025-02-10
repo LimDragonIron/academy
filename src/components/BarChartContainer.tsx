@@ -17,7 +17,7 @@ const BarChartContainer = ({children,title}:BarChartContainerProps) => {
                     </DropdownMenuTrigger>
                 </DropdownMenu>
             </div>
-            <div className='flex-grow w-full h-full'>
+            <div className='flex-1 flex w-full h-full'>
                 {children}
             </div>
         </div>

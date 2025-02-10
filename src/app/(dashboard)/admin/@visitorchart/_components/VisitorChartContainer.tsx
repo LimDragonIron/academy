@@ -1,6 +1,7 @@
 import BarChartContainer from '@/components/BarChartContainer';
 import { db } from '@/lib/prisma';
 import React from 'react';
+import { VisitorBarChart, VisitRecord } from './VisitorBarChart';
 
 export interface VisitorChartContainerProps {
 
@@ -40,17 +41,17 @@ const VisitorChartContainer = async () => {
         acc[date][role] = (acc[date][role] || 0) + 1;
   
         return acc;
-      }, {});
+    }, {});
 
-    console.log(groupedVisits)
+    const data:VisitRecord[] = Object.values(groupedVisits)
 
     return (
         <BarChartContainer
         title='Visted User Count'
         >
-            <div className='flex-grow w-full h-full'
+            <div className='w-full h-full overflow-scroll'
             >
-                
+                <VisitorBarChart chartData={data} />
             </div>
         </BarChartContainer>
     );
