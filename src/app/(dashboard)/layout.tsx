@@ -22,3 +22,4 @@ const DashBoardLayout = ({children}:DashBoardLayoutProps) => {
 }
 
 export default DashBoardLayout;
+

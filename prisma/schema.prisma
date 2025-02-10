@@ -32,6 +32,13 @@ model User {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
+  admin       Admin?
+  pendingUser PendingUser?
+  student     Student?
+  teacher     Teacher?
+  parent      Parent?
+  visits      Visit[]
+
   @@map("users")
 }
 
@@ -56,6 +63,56 @@ model Account {
 
   @@unique([provider, providerAccountId])
   @@map("accounts")
+}
+
+model Admin {
+  id     String  @id @default(cuid())
+  userId String  @unique @map("user_id")
+  user   User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("admins")
+}
+
+model PendingUser {
+  id     String  @id @default(cuid())
+  userId String  @unique @map("user_id")
+  user   User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("pending_users")
+}
+
+model Student {
+  id     String  @id @default(cuid())
+  userId String  @unique @map("user_id")
+  user   User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("students")
+}
+
+model Teacher {
+  id     String  @id @default(cuid())
+  userId String  @unique @map("user_id")
+  user   User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("teachers")
+}
+
+model Parent {
+  id     String  @id @default(cuid())
+  userId String  @unique @map("user_id")
+  user   User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("parents")
+}
+
+model Visit {
+  id        String  @id @default(cuid())
+  userId    String  @map("user_id")
+  visitDate DateTime @default(now()) @map("visit_date")
+  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, visitDate])
+  @@map("visits")
 }
 
 model VerificationToken {

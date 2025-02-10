@@ -59,6 +59,32 @@ export default {
                 });
             }
 
+            // Check if the user has already visited today
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            const tomorrow = new Date(today);
+            tomorrow.setDate(today.getDate() + 1)
+
+            const existingVisit = await db.visit.findFirst({
+              where: {
+                userId: user.id,
+                visitDate: {
+                  gte: today,
+                  lt: tomorrow,
+                },
+              },
+            });
+
+            // Record visit if not already visited today
+            if (!existingVisit) {
+              await db.visit.create({
+                data: {
+                  userId: user.id,
+                  visitDate: new Date(),
+                },
+              });
+            }
+
             return true
         },
         async jwt({ token }) {

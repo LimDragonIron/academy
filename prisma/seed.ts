@@ -16,6 +16,12 @@ async function main() {
             }
         })
 
+        const admin = await prisma.admin.create({
+            data: {
+                userId: adminUser.id
+            }
+        })
+
         const stdUser = await prisma.user.create({
             data:{
                 email:"std@test.com",
@@ -27,6 +33,12 @@ async function main() {
             }
         })
 
+        const std = await prisma.student.create({
+            data:{
+                userId: stdUser.id
+            }
+        })
+
         const thUser = await prisma.user.create({
             data:{
                 email:"th@test.com",
@@ -35,6 +47,12 @@ async function main() {
                 role: UserRole.TEACHER,
                 isApproval: true,
                 emailVerified: new Date(),
+            }
+        })
+
+        const teacher = await prisma.teacher.create({
+            data: {
+                userId: thUser.id
             }
         })
 
