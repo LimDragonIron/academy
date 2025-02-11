@@ -7,6 +7,7 @@ const UserCardsPage =  async () => {
             resolve("intentional delay")
         },2000)
     })
+    console.log("UserCardsPage")
     return (
         <div className='flex gap-4 justify-between flex-wrap'>
             <UserCard type='admin'/>

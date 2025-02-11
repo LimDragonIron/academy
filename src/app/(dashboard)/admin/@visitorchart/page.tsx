@@ -10,6 +10,7 @@ const VisitorChartPage = async () => {
             resolve("intentional delay")
         },4000)
     })
+    console.log("VisitorChartPage")
     return (
         <VisitorChartContainer />
     );

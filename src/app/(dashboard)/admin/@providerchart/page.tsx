@@ -7,6 +7,8 @@ const ProviderChartPage = async () => {
             resolve("intentional delay")
         },3000)
     })
+
+    console.log("ProviderChartPage")
     return (
         <ProviderChartContainer modelName={"account"} groupByField={'provider'} />
     );
