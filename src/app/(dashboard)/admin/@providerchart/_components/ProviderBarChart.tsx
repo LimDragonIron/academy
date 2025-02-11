@@ -33,16 +33,15 @@ const ProviderBarChart = ({data}:BarChartProps) => {
     const chartData = buildChartData(data);
     const chartConfig = buildChartConfig(data);
     return (
-        <Card className='flex flex-col h-full'>
+        <Card className='w-full h-full'>
           <CardHeader>
-            <CardTitle>Bar Chart - Providers</CardTitle>
-            <CardDescription>Provider Distribution</CardDescription>
+            <CardTitle>Providers</CardTitle>
+            <CardDescription>Provider Count</CardDescription>
           </CardHeader>
           <CardContent>
             <ChartContainer config={chartConfig}>
               <BarChart
-                width={400}
-                height={500}
+                className='flex h-full'
                 accessibilityLayer
                 data={chartData}
                 layout="vertical"

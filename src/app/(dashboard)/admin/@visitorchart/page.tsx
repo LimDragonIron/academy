@@ -11,7 +11,7 @@ const VisitorChartPage = async () => {
         },4000)
     })
     return (
-        <VisitorChartContainer></VisitorChartContainer>
+        <VisitorChartContainer />
     );
 }
 

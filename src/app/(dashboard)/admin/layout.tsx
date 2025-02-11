@@ -13,11 +13,11 @@ const Layout = ({ usercards, children, providerchart, visitorchart, searchParams
             {/* left */}
             <div className='w-full lg:w-2/3 flex flex-col gap-8'>
                 {usercards}
-                <div className="flex gap-4 flex-col lg:flex-row">
-                    <div className="w-full lg:w-1/3 h-[450px]">
+                <div className="grid gap-4 grid-cols-1 lg:grid-cols-3">
+                    <div className="h-[450px] col-span-1">
                         {providerchart}
                     </div>
-                    <div className="w-full lg:w-2/3 h-[450px]">
+                    <div className="h-[450px] col-span-2">
                         {visitorchart}
                     </div>
                 </div>

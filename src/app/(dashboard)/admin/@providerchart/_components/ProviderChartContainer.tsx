@@ -16,11 +16,9 @@ const ProviderChartContainer = async ({modelName, groupByField}: ProviderChartCo
         _count: true,
     });
 
-    return (
-        <BarChartContainer title='Account Provider Distribution'>
-            <div className='flex-grow w-full h-full'>
+    return (       
+        <BarChartContainer>
                 <ProviderBarChart data={data} />
-            </div>
         </BarChartContainer>
     );
 }
