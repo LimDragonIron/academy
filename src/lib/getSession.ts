@@ -5,7 +5,7 @@ export const currentUser = async () => {
     return session?.user;
 };
 
-export const currentRole = async () => {
+export const currentRole = async (): Promise<string>=> {
     const session = await auth();
-    return session?.user?.role;
+    return session?.user?.role ?? '';
 };
