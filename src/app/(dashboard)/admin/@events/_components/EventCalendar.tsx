@@ -16,7 +16,7 @@ const EventCalendar = () => {
 
   useEffect(() => {
     if (value instanceof Date) {
-      router.push(`?date=${value}`);
+      router.push(`/admin/events/?date=${value}`);
     }
   }, [value, router]);
 

@@ -1,10 +1,10 @@
 import React from 'react';
 import ProviderChartContainer from './_components/ProviderChartContainer';
 
-const ProviderChartPage = async () => {
+const DefaultProviderChartPage = async () => {
     return (
         <ProviderChartContainer modelName={"account"} groupByField={'provider'} />
     );
 }
 
-export default ProviderChartPage;
+export default DefaultProviderChartPage;

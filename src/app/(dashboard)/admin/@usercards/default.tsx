@@ -1,7 +1,7 @@
 import UserCard from '@/components/UserCard';
 import React from 'react';
 
-const UserCardsPage =  async () => {
+const DefaultUserCardsPage =  async () => {
     return (
         <div className='flex gap-4 justify-between flex-wrap'>
             <UserCard type='admin'/>
@@ -13,4 +13,4 @@ const UserCardsPage =  async () => {
     );
 }
 
-export default UserCardsPage;
+export default DefaultUserCardsPage;

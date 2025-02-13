@@ -1,13 +1,13 @@
 import React from 'react';
 import VisitorChartContainer from './_components/VisitorChartContainer';
 
-export interface VisitorChartPageProps {
+export interface DefaultVisitorChartPageProps {
 
 }
-const VisitorChartPage = async () => {
+const DefaultVisitorChartPage = async () => {
     return (
         <VisitorChartContainer />
     );
 }
 
-export default VisitorChartPage;
+export default DefaultVisitorChartPage;

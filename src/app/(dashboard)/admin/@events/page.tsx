@@ -5,7 +5,6 @@ export interface EventPageProps {
     searchParams: Promise<{ [keys: string]: string | undefined }>
 }
 const EventPage = async ({searchParams}:EventPageProps) => {
-   
     return (
         <EventCalendarContainer searchParams={searchParams}/>
     );
